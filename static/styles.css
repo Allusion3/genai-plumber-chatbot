@@ -1,76 +1,94 @@
+/* Use clean Google font */
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f0f4f8;
+  background-color: #f5f7fa;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
 }
 
-/* Title Bar */
+/* Header at the top */
 .page-header {
   background-color: #1e73be;
   color: white;
   padding: 20px;
-  font-size: 20px;
+  font-size: 24px;
   text-align: center;
   font-weight: bold;
 }
 
-/* Chat area */
-.chat-area {
+/* Main chat wrapper */
+.chat-container {
   flex: 1;
-  display: flex;
-  flex-direction: column;
   max-width: 700px;
   margin: 0 auto;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Messages */
+/* Box that holds all chat messages */
 .messages-box {
   flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-bottom: 16px;
+  min-height: 400px;
 }
 
-/* One message bubble */
+/* Each chat message (user, bot, or error) */
 .message-box {
   padding: 12px 16px;
   border-radius: 10px;
   max-width: 80%;
   white-space: pre-wrap;
+  line-height: 1.4;
 }
 
+/* User message bubble (right side) */
 .message-box.you {
   background-color: #d9f1ff;
   align-self: flex-end;
 }
 
+/* Bot message bubble (left side) */
 .message-box.bot {
-  background-color: #ffffff;
+  background-color: #f0f2f5;
   align-self: flex-start;
 }
 
+/* Error message bubble */
 .message-box.error {
   background-color: #ffeaea;
   border-left: 4px solid red;
 }
 
-/* Chat form */
+/* Form container at the bottom */
 .chat-form {
+  background-color: #ffffff;
+  border-top: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+/* Row layout for form elements */
+.form-row {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 12px;
-  background-color: #ffffff;
-  border-top: 1px solid #ccc;
+  align-items: center;
 }
 
+/* Shared styles for all form inputs */
 .chat-type,
 .text-box,
 .image-upload,
@@ -81,18 +99,63 @@ body {
   border: 1px solid #ccc;
 }
 
-.text-box {
-  flex-grow: 1;
+/* Mode dropdown (left) */
+.chat-type {
+  flex: 1 1 130px;
 }
 
+/* Text input for message */
+.text-box {
+  flex: 2 1 250px;
+}
+
+/* File input for images */
+.image-upload {
+  flex: 1 1 200px;
+}
+
+/* Send button styling */
 .send-button {
+  flex: 0 1 auto;
   background-color: #1e73be;
   color: white;
   font-weight: bold;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .send-button:hover {
   background-color: #145c9e;
+}
+
+/* Mobile layout adjustments */
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .chat-type,
+  .text-box,
+  .image-upload,
+  .send-button {
+    flex: 1 1 100%;
+  }
+
+/* Typing animation dots */
+.dot-one, .dot-two, .dot-three {
+  animation: blink 1.5s infinite;
+  opacity: 0;
+}
+.dot-one { animation-delay: 0s; }
+.dot-two { animation-delay: 0.2s; }
+.dot-three { animation-delay: 0.4s; }
+
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+
 }

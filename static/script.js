@@ -1,60 +1,75 @@
-// When the page is ready...
+// Wait for the page to finish loading
 document.addEventListener("DOMContentLoaded", () => {
-  // Grab the form and message display area
+  // Grab DOM elements
   const chatForm = document.getElementById("chat-form");
-  const messagesBox = document.getElementById("messages");
+  const messagesBox = document.getElementById("chat-messages");
   const userText = document.getElementById("user-text");
+  const modeSelect = document.getElementById("chat-type");
+  const imageInput = document.getElementById("user-images");
 
-  // Handle form submission (when user clicks "Send")
+  // Handle form submit
   chatForm.addEventListener("submit", async (event) => {
-    event.preventDefault(); // stop the page from refreshing
+    event.preventDefault(); // Prevent page reload
 
-    const message = userText.value.trim(); // get the message text
-    const mode = document.getElementById("chat-type").value; // get which mode (general, sms, mentor)
-    const files = document.getElementById("user-images").files; // get uploaded files
+    const message = userText.value.trim();
+    const mode = modeSelect.value;
+    const files = imageInput.files;
 
     if (!message) {
       console.warn("No message entered");
       return;
     }
 
-    // Add the user's message to the chat visually
+    // Show user message
     const userMessage = document.createElement("div");
     userMessage.className = "message-box you";
     userMessage.innerHTML = `<strong>You:</strong> ${message}`;
     messagesBox.appendChild(userMessage);
-    messagesBox.scrollTop = messagesBox.scrollHeight; // scroll to bottom
-    userText.value = ""; // clear the text box
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+    userText.value = "";
 
-    // Build the data we're sending (text + mode + files)
+    // Build form data for backend
     const formData = new FormData();
     formData.append("message", message);
     formData.append("mode", mode);
-
     for (let i = 0; i < Math.min(files.length, 10); i++) {
-      formData.append("images", files[i]); // attach up to 10 images
+      formData.append("images", files[i]);
     }
 
+    // 🔵 Show typing animation
+    const typingMsg = document.createElement("div");
+    typingMsg.id = "typing";
+    typingMsg.className = "message-box bot";
+    typingMsg.innerHTML = `<em>Plumber Bot is typing<span class="dot-one">.</span><span class="dot-two">.</span><span class="dot-three">.</span></em>`;
+    messagesBox.appendChild(typingMsg);
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+
     try {
-      // Send the form to our backend (FastAPI)
+      // Send data to the backend
       const res = await fetch("http://localhost:8000/chat/upload", {
         method: "POST",
         body: formData,
       });
 
-      // Convert the response to JSON
+      // Remove typing indicator once response comes in
+      const typing = document.getElementById("typing");
+      if (typing) typing.remove();
+
       const data = await res.json();
       console.log("Response from backend:", data);
 
-      // Add the assistant's response to the chat visually
+      // Show assistant reply
       const botMessage = document.createElement("div");
       botMessage.className = "message-box bot";
       botMessage.innerHTML = `<strong>Plumber Bot:</strong> ${data.response}`;
       messagesBox.appendChild(botMessage);
-      messagesBox.scrollTop = messagesBox.scrollHeight; // scroll to bottom
+      messagesBox.scrollTop = messagesBox.scrollHeight;
 
     } catch (error) {
-      // Show an error in the chat if something breaks
+      // Remove typing if there's an error
+      const typing = document.getElementById("typing");
+      if (typing) typing.remove();
+
       console.error("Error:", error);
       const errorMessage = document.createElement("div");
       errorMessage.className = "message-box error";
