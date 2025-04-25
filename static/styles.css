@@ -1,15 +1,15 @@
-/* Use clean Google font */
+/* Base layout and font */
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f5f7fa;
-  display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
 }
 
-/* Header at the top */
+/* Header bar at the top */
 .page-header {
   background-color: #1e73be;
   color: white;
@@ -19,17 +19,17 @@ body {
   font-weight: bold;
 }
 
-/* Main chat wrapper */
+/* Main container that centers chat content */
 .chat-container {
   flex: 1;
-  max-width: 700px;
+  max-width: 75%;
   margin: 0 auto;
   padding: 16px;
   display: flex;
   flex-direction: column;
 }
 
-/* Box that holds all chat messages */
+/* Container holding all chat messages */
 .messages-box {
   flex: 1;
   overflow-y: auto;
@@ -41,10 +41,10 @@ body {
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-bottom: 16px;
-  min-height: 400px;
+  min-height: 60vh;
 }
 
-/* Each chat message (user, bot, or error) */
+/* Individual message bubbles */
 .message-box {
   padding: 12px 16px;
   border-radius: 10px;
@@ -53,97 +53,143 @@ body {
   line-height: 1.4;
 }
 
-/* User message bubble (right side) */
+/* User messages (right side, blue) */
 .message-box.you {
   background-color: #d9f1ff;
   align-self: flex-end;
 }
 
-/* Bot message bubble (left side) */
+/* Bot messages (left side, light gray) */
 .message-box.bot {
   background-color: #f0f2f5;
   align-self: flex-start;
 }
 
-/* Error message bubble */
+/* Error messages (red strip on left) */
 .message-box.error {
   background-color: #ffeaea;
   border-left: 4px solid red;
 }
 
-/* Form container at the bottom */
+/* Whole form */
 .chat-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
   background-color: #ffffff;
   border-top: 1px solid #ccc;
-  padding: 12px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
-/* Row layout for form elements */
-.form-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-
-/* Shared styles for all form inputs */
-.chat-type,
-.text-box,
-.image-upload,
-.send-button {
-  padding: 10px;
+/* Dropdown mode selector */
+.chat-type {
   font-size: 16px;
+  padding: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  width: 2rem;
+  height: 2rem;
 }
 
-/* Mode dropdown (left) */
-.chat-type {
-  flex: 1 1 130px;
+
+/* Row that holds textarea + send button */
+.input-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
 }
 
-/* Text input for message */
+
+/* Main message input (textarea now) */
 .text-box {
-  flex: 2 1 250px;
+ flex-grow: 1;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-family: inherit;
+  line-height: 1.5;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  resize: none;
+  min-height: 44px;
+  max-height: 200px;
+  overflow-y: hidden;
+  background-color: #f9fafb; /* Softer background color */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* File input for images */
+.text-box:focus {
+  border-color: #1e73be; /* Highlight border on focus */
+  box-shadow: 0 0 4px rgba(30, 115, 190, 0.5); /* Glow effect */
+  outline: none; /* Removes default outline */
+}
+
+
+
+/* Dropdown for selecting mode */
+.chat-type {
+  flex: 1 1 50px;
+  min-width: 200px;
+}
+
+/* Upload input */
 .image-upload {
-  flex: 1 1 200px;
+  min-width: 140px;
 }
 
-/* Send button styling */
+/* Send button next to text area */
 .send-button {
-  flex: 0 1 auto;
+  padding: 12px 18px;
+  font-size: 16px;
+  font-weight: bold;
   background-color: #1e73be;
   color: white;
-  font-weight: bold;
   border: none;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  height: 44px;
+  margin: auto
 }
 
 .send-button:hover {
   background-color: #145c9e;
 }
 
-/* Mobile layout adjustments */
+.image-upload {
+  font-size: 14px;
+}
+
+
+/* Responsive: stack form vertically on small screens */
 @media (max-width: 600px) {
-  .form-row {
+  .chat-form {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .chat-type,
-  .text-box,
-  .image-upload,
-  .send-button {
-    flex: 1 1 100%;
-  }
 
-/* Typing animation dots */
+
+.text-box {
+  flex: 1 1 auto;
+  font-size: 16px;
+  font-family: inherit;
+  padding: 12px 16px;
+  line-height: 1.5;
+  border-radius: 16px;
+  border: 1px solid #ccc;
+  min-height: 44px;
+  max-height: 200px;
+  overflow-y: hidden;
+  resize: none;
+  transition: height 0.2s ease;
+}
+
+
+
+/* Typing animation styles */
 .dot-one, .dot-two, .dot-three {
   animation: blink 1.5s infinite;
   opacity: 0;
@@ -155,7 +201,4 @@ body {
 @keyframes blink {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
-}
-
-
 }

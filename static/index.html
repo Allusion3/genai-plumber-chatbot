@@ -14,20 +14,37 @@
     <div id="chat-messages" class="messages-box"></div>
 
     <form id="chat-form" class="chat-form" enctype="multipart/form-data">
-        <div class="input-group">
-            <select id="chat-type" name="mode" class="chat-type">
-                <option value="general">General Help</option>
-                <option value="sms">Quick SMS Reply</option>
-                <option value="mentor">Help a Tech</option>
-            </select>
+        <!-- Mode dropdown on its own row -->
+        <select id="chat-type" name="mode" class="chat-type">
+            <option value="general">General Help</option>
+            <option value="sms">Quick SMS Reply</option>
+            <option value="mentor">Help a Tech</option>
+        </select>
 
-            <input id="user-text" type="text" name="message" class="text-box" placeholder="Describe your plumbing issue..." required />
-
-            <input id="user-images" type="file" name="images" class="image-upload" accept="image/*" multiple />
-
+        <!-- Row with text area and send button -->
+        <div class="input-row">
+    <textarea
+            id="user-text"
+            name="message"
+            class="text-box"
+            placeholder="Describe your plumbing issue..."
+            rows="1"
+            required
+    ></textarea>
             <button type="submit" class="send-button">Send</button>
         </div>
+
+        <!-- File input under everything -->
+        <input
+                id="user-images"
+                type="file"
+                name="images"
+                class="image-upload"
+                accept="image/*"
+                multiple
+        />
     </form>
+
 </main>
 
 <script src="script.js"></script>

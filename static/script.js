@@ -7,6 +7,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const modeSelect = document.getElementById("chat-type");
   const imageInput = document.getElementById("user-images");
 
+  // Automatically expand the textarea as user types
+  const textArea = document.getElementById("user-text");
+
+  textArea.addEventListener("input", () => {
+    textArea.style.height = "auto"; // reset
+    textArea.style.height = `${textArea.scrollHeight}px`; // expand to fit
+  });
+
   // Handle form submit
   chatForm.addEventListener("submit", async (event) => {
     event.preventDefault(); // Prevent page reload
