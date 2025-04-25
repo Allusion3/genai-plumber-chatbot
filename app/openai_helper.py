@@ -1,7 +1,7 @@
 import openai
 import os
 from dotenv import load_dotenv
-from prompt_helper import PromptHelper
+from .prompt_helper import PromptHelper
 
 # Load environment variables from a .env file
 load_dotenv()
@@ -24,14 +24,17 @@ class OpenAIHelper:
 
         # Call the OpenAI API to generate a chat completion
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",  # Specify the model to use
+            model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": system_prompt},  # System prompt to set the AI's behavior
-                {"role": "user", "content": message}  # User's input message
-            ]
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": message}
+            ],
+            max_tokens=800,
+            timeout=10  # <- this prevents it from hanging forever
         )
 
-        # Extract the AI's reply from the response
+
+    # Extract the AI's reply from the response
         reply = response.choices[0].message.content.strip()
 
         # Extract token usage details from the response
